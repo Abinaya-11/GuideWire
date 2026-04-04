@@ -1,9 +1,9 @@
-﻿// filepath: C:\Users\saipo\OneDrive\Desktop\guideWire\backend\server.js
+// filepath: C:\Users\saipo\OneDrive\Desktop\guideWire\backend\server.js
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const { initFirebase } = require("./firebaseService");
-require("dotenv").config();
+require("dotenv").config({ path: require("path").join(__dirname, ".env") });
 
 const PORT = process.env.PORT || 4000;
 const db = initFirebase();
@@ -12,6 +12,22 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get("/health", (req, res) => res.json({ status: "ok" }));
+
+app.get("/premium/calculate", (req, res) => {
+  const zone = String(req.query.zone ?? "").trim();
+  let weeklyPremium;
+  switch (zone) {
+    case "Velachery":
+      weeklyPremium = 70;
+      break;
+    case "T. Nagar":
+      weeklyPremium = 60;
+      break;
+    default:
+      weeklyPremium = 50;
+  }
+  res.json({ zone, weeklyPremium });
+});
 
 app.get("/payouts", async (req, res) => {
   try {

@@ -10,8 +10,9 @@ node_modules/
 /build
 /dist
 
-# Env / Secrets
+# Env / Secrets (any .env file, e.g. backend/.env — never commit API keys)
 .env
+backend/.env
 .env.local
 .env.development.local
 .env.test.local
